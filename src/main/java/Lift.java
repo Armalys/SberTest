@@ -27,27 +27,27 @@ public class Lift {
     }
 
     public int receiveTimeWithUseLift(int currentFloor, int floorToUp) {
-        SortedSet<Integer> maxTimeToEnterFloor = new TreeSet<>();
+        SortedSet<Integer> maxTimeToEnterOnFloor = new TreeSet<>();
         //Для тех, кто едет в в лифте, затем поднимается
-        maxTimeToEnterFloor.add(currentFloor * liftTime + (numberOfFloors - currentFloor) * timeGoUpOnFloor);
-        //Время для тех кто спускается поле лифта
-        maxTimeToEnterFloor.add(currentFloor * liftTime + (currentFloor - floorToUp - 1) * timeGoDownOnFloor);
+        maxTimeToEnterOnFloor.add(currentFloor * liftTime + (numberOfFloors - currentFloor) * timeGoUpOnFloor);
+        //Время для тех кто спускается после лифта
+        maxTimeToEnterOnFloor.add(currentFloor * liftTime + (currentFloor - floorToUp - 1) * timeGoDownOnFloor);
         //Время для тех, кто не едет в лифте
-        maxTimeToEnterFloor.add(floorToUp * timeGoUpOnFloor);
-        return maxTimeToEnterFloor.last();
+        maxTimeToEnterOnFloor.add(floorToUp * timeGoUpOnFloor);
+        return maxTimeToEnterOnFloor.last();
     }
 
     public int receiveTotalResultTime() {
         SortedSet<Integer> allTimeResults = new TreeSet<>();
         int floorToUp = 0;
-        int totalResult = numberOfFloors * timeGoUpOnFloor;
-        allTimeResults.add(totalResult);
+        int totalTimeResult = numberOfFloors * timeGoUpOnFloor;
+        allTimeResults.add(totalTimeResult);
         for (int currentFloor = 1; currentFloor <= numberOfFloors; currentFloor++) {
             // Этаж, на котором встретятся люди которые поднимаются и люди которые спускаются
             floorToUp = (liftTime + timeGoDownOnFloor) * currentFloor / (timeGoUpOnFloor + timeGoDownOnFloor);
             allTimeResults.add(receiveTimeWithUseLift(currentFloor, floorToUp));
-            totalResult = allTimeResults.first();
+            totalTimeResult = allTimeResults.first();
         }
-        return totalResult;
+        return totalTimeResult;
     }
 }
